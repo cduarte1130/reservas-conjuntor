@@ -2,112 +2,105 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Reservas - Salón Social Conjunto R</title>
+  <title>Reservar Salón Social - Conjunto R</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      background-color: #f2f2f2;
+      text-align: center;
       padding: 20px;
-      max-width: 500px;
-      margin: auto;
     }
-    h2 {
-      color: #333;
+
+    label {
+      display: block;
+      margin-top: 10px;
     }
+
     input, select, button {
-      width: 100%;
-      margin-bottom: 10px;
       padding: 8px;
+      margin: 5px;
+      width: 250px;
     }
-    .hidden {
-      display: none;
+
+    #respuesta {
+      margin-top: 15px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <h2>Ingreso - Conjunto R</h2>
-  <div id="loginDiv">
-    <label>Torre:</label>
-    <select id="torre">
-      <option value="">Selecciona torre</option>
-      <script>
-        for (let i = 1; i <= 8; i++) {
-          document.write(`<option value="${i}">${i}</option>`);
+  <h3>Reservar Salón Social</h3>
+
+  <label>Torre:</label>
+  <select id="torre">
+    <option value="">Selecciona torre</option>
+    <option value="1">Torre 1</option>
+    <option value="2">Torre 2</option>
+    <option value="3">Torre 3</option>
+    <option value="4">Torre 4</option>
+    <option value="5">Torre 5</option>
+    <option value="6">Torre 6</option>
+    <option value="7">Torre 7</option>
+    <option value="8">Torre 8</option>
+  </select>
+
+  <label>Apartamento:</label>
+  <select id="apto">
+    <option value="">Selecciona apartamento</option>
+    <!-- Ejemplo: 5 pisos * 4 apartamentos por piso = 20 -->
+    <!-- Puedes generar esto dinámicamente si gustas -->
+    <script>
+      for (let piso = 1; piso <= 5; piso++) {
+        for (let apto = 1; apto <= 4; apto++) {
+          const num = piso * 100 + apto;
+          document.write(`<option value="${num}">${num}</option>`);
         }
-      </script>
-    </select>
+      }
+    </script>
+  </select>
 
-    <label>Apartamento:</label>
-    <select id="apto">
-      <option value="">Selecciona apartamento</option>
-      <script>
-        for (let piso = 1; piso <= 5; piso++) {
-          for (let num = 1; num <= 4; num++) {
-            let aptoNum = piso * 100 + num;
-            document.write(`<option value="${aptoNum}">${aptoNum}</option>`);
-          }
-        }
-      </script>
-    </select>
+  <label>Fecha:</label>
+  <input type="date" id="fecha">
 
-    <button onclick="login()">Ingresar</button>
-  </div>
+  <label>Hora Inicio:</label>
+  <input type="time" id="horaInicio">
 
-  <div id="reservaDiv" class="hidden">
-    <h2>Reservar Salón Social</h2>
-    <label>Fecha:</label>
-    <input type="date" id="fecha">
-    <label>Hora Inicio:</label>
-    <input type="time" id="horaInicio">
-    <label>Hora Fin:</label>
-    <input type="time" id="horaFin">
-    <div>
-    <label>Correo electrónico:</label>
-    <input type="email" id="correo" required />
-    </div>
-    <button onclick="enviarReserva()">Reservar</button>
-    <p id="respuesta"></p>
-  </div>
+  <label>Hora Fin:</label>
+  <input type="time" id="horaFin">
+
+  <label>Correo electrónico:</label>
+  <input type="email" id="correo" required>
+
+  <br>
+  <button onclick="enviarReserva()">Reservar</button>
+
+  <p id="respuesta"></p>
 
   <script>
-    let torreSeleccionada = '';
-    let aptoSeleccionado = '';
-
-    function login() {
-      const torre = document.getElementById('torre').value;
-      const apto = document.getElementById('apto').value;
-
-      if (torre && apto) {
-        torreSeleccionada = torre;
-        aptoSeleccionado = apto;
-        document.getElementById('loginDiv').classList.add('hidden');
-        document.getElementById('reservaDiv').classList.remove('hidden');
-      } else {
-        alert("Selecciona torre y apartamento.");
-      }
-    }
-
     function enviarReserva() {
-      const fecha = document.getElementById('fecha').value;
-      const horaInicio = document.getElementById('horaInicio').value;
-      const horaFin = document.getElementById('horaFin').value;
+      const torre = document.getElementById("torre").value;
+      const apto = document.getElementById("apto").value;
+      const fecha = document.getElementById("fecha").value;
+      const horaInicio = document.getElementById("horaInicio").value;
+      const horaFin = document.getElementById("horaFin").value;
+      const correo = document.getElementById("correo").value.trim();
 
-      if (!fecha || !horaInicio || !horaFin) {
-        alert("Completa todos los campos.");
+      if (!torre || !apto || !fecha || !horaInicio || !horaFin || !correo) {
+        alert("Por favor completa todos los campos.");
         return;
       }
 
-      const url = 'https://script.google.com/macros/s/AKfycbzDjCOMiRsXnokV18W8MzzAj4oEHO6GGjPmcNeyfecmFp43jXLiGmIOHK0HJ8uuilE/exec'; // <- Reemplaza aquí
+      const url = "https://script.google.com/macros/s/AKfycbzDjCOMiRsXnokV18W8MzzAj4oEHO6GGjPmcNeyfecmFp43jXLiGmIOHK0HJ8uuilE/exec";
 
       const params = new URLSearchParams({
-        torre: torreSeleccionada,
-        apto: aptoSeleccionado,
-        fecha: fechaInput.value,
-        horaInicio: horaInicioInput.value,
-        horaFin: horaFinInput.value,
-        correo: document.getElementById("correo").value.trim()
+        torre,
+        apto,
+        fecha,
+        horaInicio,
+        horaFin,
+        correo
       });
-
 
       fetch(url, {
         method: 'POST',
@@ -115,10 +108,12 @@
       })
       .then(res => res.text())
       .then(data => {
-        document.getElementById('respuesta').textContent = data;
+        document.getElementById("respuesta").textContent = data;
+        alert(data); // respaldo visual
       })
       .catch(err => {
-        document.getElementById('respuesta').textContent = "Error al enviar la reserva.";
+        document.getElementById("respuesta").textContent = "Error al enviar la reserva.";
+        alert("Error al enviar la reserva.");
         console.error(err);
       });
     }
