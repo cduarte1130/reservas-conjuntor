@@ -89,7 +89,7 @@
       <label for="apto">Apartamento:</label>
       <select id="apto">
         <option value="">Seleccione</option>
-        ${[...Array(20)].map((_, i) => `<option value="${101 + i}">${101 + i}</option>`).join('')}
+        ${[...Array(20)].map((_, i) => `<option value=`${101 + i}`>${101 + i}</option>`).join('')}
       </select>
 
       <button onclick="login()">Ingresar</button>
