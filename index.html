@@ -3,74 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reserva - Conjunto R</title>
+  <title>Reserva Salón Social - Conjunto R</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f6f6f6;
+      background-color: #f4f4f4;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
-
-    .container {
+    .card {
       background: #fff;
-      padding: 30px 40px;
+      padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 320px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 300px;
     }
-
     h2 {
-      margin-bottom: 10px;
+      text-align: center;
+      margin-bottom: 1.5rem;
       color: #333;
     }
-
     label {
       display: block;
-      margin-top: 15px;
+      margin-top: 1rem;
       font-weight: bold;
-      text-align: left;
     }
-
-    select, input[type="date"], input[type="time"], input[type="email"] {
+    input, select, button {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 6px;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
       border: 1px solid #ccc;
+      border-radius: 5px;
     }
-
     button {
-      margin-top: 20px;
-      padding: 10px 25px;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      background-color: #007bff;
+      color: white;
       font-weight: bold;
+      margin-top: 1.5rem;
+      cursor: pointer;
     }
-
     button:hover {
-      background-color: #555;
+      background-color: #0056b3;
     }
-
+    #reservaDiv {
+      display: none;
+    }
     .hidden {
       display: none;
     }
-
-    #respuesta {
-      margin-top: 15px;
+    .respuesta {
+      margin-top: 1rem;
+      text-align: center;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="card">
     <div id="loginDiv">
       <h2>Ingreso - Conjunto R</h2>
       <label for="torre">Torre:</label>
@@ -89,46 +80,59 @@
       <label for="apto">Apartamento:</label>
       <select id="apto">
         <option value="">Seleccione</option>
-        ${[...Array(20)].map((_, i) => `<option value=`${101 + i}`>${101 + i}</option>`).join('')}
       </select>
 
       <button onclick="login()">Ingresar</button>
     </div>
 
-    <div id="reservaDiv" class="hidden">
+    <div id="reservaDiv">
       <h2>Reservar Salón Social</h2>
-      <label>Fecha:</label>
-      <input type="date" id="fecha"/>
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" />
 
-      <label>Hora Inicio:</label>
-      <input type="time" id="horaInicio"/>
+      <label for="horaInicio">Hora Inicio:</label>
+      <input type="time" id="horaInicio" />
 
-      <label>Hora Fin:</label>
-      <input type="time" id="horaFin"/>
+      <label for="horaFin">Hora Fin:</label>
+      <input type="time" id="horaFin" />
 
-      <label>Correo electrónico:</label>
-      <input type="email" id="correo" required/>
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" id="correo" required />
 
       <button onclick="enviarReserva()">Reservar</button>
-      <p id="respuesta"></p>
+
+      <p id="respuesta" class="respuesta"></p>
     </div>
   </div>
 
   <script>
+    // Generar apartamentos del 101 al 120
+    const selectApto = document.getElementById("apto");
+    for (let i = 0; i < 20; i++) {
+      const num = 101 + i;
+      const option = document.createElement("option");
+      option.value = num;
+      option.textContent = num;
+      selectApto.appendChild(option);
+    }
+
     let torreSeleccionada = "";
     let aptoSeleccionado = "";
 
     function login() {
-      torreSeleccionada = document.getElementById("torre").value;
-      aptoSeleccionado = document.getElementById("apto").value;
+      const torre = document.getElementById("torre").value;
+      const apto = document.getElementById("apto").value;
 
-      if (!torreSeleccionada || !aptoSeleccionado) {
-        alert("Por favor selecciona torre y apartamento.");
+      if (!torre || !apto) {
+        alert("Por favor seleccione torre y apartamento.");
         return;
       }
 
-      document.getElementById("loginDiv").classList.add("hidden");
-      document.getElementById("reservaDiv").classList.remove("hidden");
+      torreSeleccionada = torre;
+      aptoSeleccionado = apto;
+
+      document.getElementById("loginDiv").style.display = "none";
+      document.getElementById("reservaDiv").style.display = "block";
     }
 
     function enviarReserva() {
@@ -138,12 +142,11 @@
       const correo = document.getElementById("correo").value.trim();
 
       if (!fecha || !horaInicio || !horaFin || !correo) {
-        alert("Completa todos los campos.");
+        alert("Complete todos los campos.");
         return;
       }
 
-      const url = 'https://script.google.com/macros/s/AKfycbzDjCOMiRsXnokV18W8MzzAj4oEHO6GGjPmcNeyfecmFp43jXLiGmIOHK0HJ8uuilE/exec';
-
+      const url = "https://script.google.com/macros/s/AKfycbzDjCOMiRsXnokV18W8MzzAj4oEHO6GGjPmcNeyfecmFp43jXLiGmIOHK0HJ8uuilE/exec";
       const params = new URLSearchParams({
         torre: torreSeleccionada,
         apto: aptoSeleccionado,
