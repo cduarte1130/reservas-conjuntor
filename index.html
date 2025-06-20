@@ -110,7 +110,7 @@
     const selectApto = document.getElementById("apto");
     for (let piso = 1; piso <= 5; piso++) {
       for (let apto = 1; apto <= 4; apto++) {
-      const numero = `${piso}0${apto}`;
+      const numero = `${piso}${String(apto).padStart(2, '0')}`;
       const option = document.createElement("option");
       option.value = numero;
       option.textContent = numero;
