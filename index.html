@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservas - Salón Social Conjunto R</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    h2 {
+      color: #333;
+    }
+    input, select, button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ingreso - Conjunto R</h2>
+  <div id="loginDiv">
+    <label>Torre:</label>
+    <select id="torre">
+      <option value="">Selecciona torre</option>
+      <script>
+        for (let i = 1; i <= 8; i++) {
+          document.write(`<option value="${i}">${i}</option>`);
+        }
+      </script>
+    </select>
+
+    <label>Apartamento:</label>
+    <select id="apto">
+      <option value="">Selecciona apartamento</option>
+      <script>
+        for (let piso = 1; piso <= 5; piso++) {
+          for (let num = 1; num <= 4; num++) {
+            let aptoNum = piso * 100 + num;
+            document.write(`<option value="${aptoNum}">${aptoNum}</option>`);
+          }
+        }
+      </script>
+    </select>
+
+    <button onclick="login()">Ingresar</button>
+  </div>
+
+  <div id="reservaDiv" class="hidden">
+    <h2>Reservar Salón Social</h2>
+    <label>Fecha:</label>
+    <input type="date" id="fecha">
+    <label>Hora Inicio:</label>
+    <input type="time" id="horaInicio">
+    <label>Hora Fin:</label>
+    <input type="time" id="horaFin">
+    <button onclick="enviarReserva()">Reservar</button>
+    <p id="respuesta"></p>
+  </div>
+
+  <script>
+    let torreSeleccionada = '';
+    let aptoSeleccionado = '';
+
+    function login() {
+      const torre = document.getElementById('torre').value;
+      const apto = document.getElementById('apto').value;
+
+      if (torre && apto) {
+        torreSeleccionada = torre;
+        aptoSeleccionado = apto;
+        document.getElementById('loginDiv').classList.add('hidden');
+        document.getElementById('reservaDiv').classList.remove('hidden');
+      } else {
+        alert("Selecciona torre y apartamento.");
+      }
+    }
+
+    function enviarReserva() {
+      const fecha = document.getElementById('fecha').value;
+      const horaInicio = document.getElementById('horaInicio').value;
+      const horaFin = document.getElementById('horaFin').value;
+
+      if (!fecha || !horaInicio || !horaFin) {
+        alert("Completa todos los campos.");
+        return;
+      }
+
+      const url = 'https://script.google.com/macros/s/AKfycbyXlvOx_aVq5JN5kbZHPmWTCednYoyeCqdNCvpm-Lh433SQ5Uh9_3-34SZ7Cff76cLZNg/exec'; // <- Reemplaza aquí
+
+      const params = new URLSearchParams({
+        torre: torreSeleccionada,
+        apto: aptoSeleccionado,
+        fecha,
+        horaInicio,
+        horaFin
+      });
+
+      fetch(url, {
+        method: 'POST',
+        body: params
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('respuesta').textContent = data;
+      })
+      .catch(err => {
+        document.getElementById('respuesta').textContent = "Error al enviar la reserva.";
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>
