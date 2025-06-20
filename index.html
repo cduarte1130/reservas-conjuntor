@@ -61,6 +61,10 @@
     <input type="time" id="horaInicio">
     <label>Hora Fin:</label>
     <input type="time" id="horaFin">
+    <div>
+    <label>Correo electrónico:</label>
+    <input type="email" id="correo" required />
+    </div>
     <button onclick="enviarReserva()">Reservar</button>
     <p id="respuesta"></p>
   </div>
@@ -98,10 +102,12 @@
       const params = new URLSearchParams({
         torre: torreSeleccionada,
         apto: aptoSeleccionado,
-        fecha,
-        horaInicio,
-        horaFin
+        fecha: fechaInput.value,
+        horaInicio: horaInicioInput.value,
+        horaFin: horaFinInput.value,
+        correo: document.getElementById("correo").value.trim()
       });
+
 
       fetch(url, {
         method: 'POST',
