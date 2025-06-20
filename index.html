@@ -106,13 +106,14 @@
   </div>
 
   <script>
-    // Generar apartamentos dinámicamente del 101 al 120
+    // Generar apartamentos: 5 pisos * 4 aptos por piso = 20 aptos por torre, desde 101 a 504
     const selectApto = document.getElementById("apto");
-    for (let i = 0; i < 20; i++) {
-      const num = 101 + i;
+    for (let piso = 1; piso <= 5; piso++) {
+      for (let apto = 1; apto <= 4; apto++) {
+      const numero = `${piso}0${apto}`;
       const option = document.createElement("option");
-      option.value = num;
-      option.textContent = num;
+      option.value = numero;
+      option.textContent = numero;
       selectApto.appendChild(option);
     }
 
